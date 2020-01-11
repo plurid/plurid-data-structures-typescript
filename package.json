@@ -1,0 +1,57 @@
+{
+    "name": "@plurid/plurid-data-structures",
+    "version": "0.1.0",
+    "description": "Plurid Data Structures",
+    "keywords": [
+        "plurid",
+        "data",
+        "structures"
+    ],
+    "author": "Jan Cavel <caveljan@plurid.com> (https://plurid.com)",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/plurid/plurid-data-structures-typescript"
+    },
+    "bugs": {
+        "email": "feedback@plurid.com",
+        "url": "https://github.com/plurid/plurid-data-structures-typescript/issues"
+    },
+    "homepage": "https://github.com/plurid/plurid-data-structures-typescript",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "build/"
+    ],
+    "main": "build/index.js",
+    "module": "build/index.es.js",
+    "jsnext:main": "build/index.es.js",
+    "engines": {
+        "node": ">=8",
+        "npm": ">=5"
+    },
+    "scripts": {
+        "spec": "jest",
+        "lint": "eslint ./source/index.ts",
+        "clean": "rm -rf ./build",
+        "start": "yarn clean && rollup -c -w",
+        "build.dev": "yarn clean && rollup -c",
+        "build.prod": "rollup -c --environment BUILD:production",
+        "build": "yarn clean && yarn lint && yarn spec && yarn build.prod",
+        "prepublishOnly": "yarn build"
+    },
+    "devDependencies": {
+        "@types/crypto-js": "^3.1.43",
+        "@types/jest": "^24.0.25",
+        "@types/node": "^13.1.6",
+        "@typescript-eslint/eslint-plugin": "^2.15.0",
+        "@typescript-eslint/parser": "^2.15.0",
+        "eslint": "^6.8.0",
+        "jest": "^24.9.0",
+        "rollup": "^1.29.0",
+        "rollup-plugin-typescript2": "^0.25.3",
+        "ts-jest": "^24.3.0",
+        "typescript": "^3.7.4"
+    }
+}
