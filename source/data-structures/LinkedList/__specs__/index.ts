@@ -1,6 +1,6 @@
 import LinkedList from '../';
 
-
+const util = require('util');
 
 describe('LinkedList', () => {
     it('basic', () => {
@@ -52,6 +52,27 @@ describe('LinkedList', () => {
         console.log(ll.removeFrom(3));
 
         // prints 10 20 60 40
+        console.log(ll.print_list());
+
+        expect(true).toBeTruthy();
+    });
+
+    it.only('complex', () => {
+        const element1 = {
+            id: 'foo',
+            text: 'boo',
+        };
+        const element2 = {
+            id: 'loo',
+            text: 'too',
+        };
+
+        const ll = new LinkedList();
+
+        ll.add(element1);
+        ll.insertAt(element1, 1);
+        ll.add(element2);
+
         console.log(ll.print_list());
 
         expect(true).toBeTruthy();

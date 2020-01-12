@@ -209,12 +209,12 @@ class LinkedList<T> {
      */
     print_list() {
         let current = this.head;
-        let str = '';
+        let list = [];
         while (current) {
-            str += current.element + ' ';
+            list.push(current.element);
             current = current.next;
         }
-        return str;
+        return list;
     }
 }
 
