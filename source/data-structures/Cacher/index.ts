@@ -1,17 +1,19 @@
+// #region imports
+    // #region external
+    import {
+        CacherOptions,
+        CachedObject,
+    } from '~data/interfaces';
+
+    import {
+        ONE_HOUR,
+    } from '~data/constants';
+    // #endregion external
+// #endregion imports
+
+
+
 // #region module
-export interface CacherOptions {
-    cacheTime: number;
-    cleanupInterval: number;
-}
-
-export interface CachedObject<T = any> {
-    expiration: number;
-    data: T;
-}
-
-export const ONE_HOUR = 1_000 * 60 * 60;
-
-
 class Cacher<T = any> {
     private objects: Map<string, CachedObject<T>> = new Map();
     private options: CacherOptions;
