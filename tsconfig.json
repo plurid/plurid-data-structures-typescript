@@ -1,6 +1,10 @@
 {
     "compilerOptions": {
-        "sourceMap": true,
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "target": "ES6",
+        "lib": ["ES6", "DOM", "DOM.Iterable", "ES2016", "ES2017"],
+        "jsx": "react",
 
         "baseUrl": ".",
         "paths": {
@@ -9,31 +13,35 @@
             ],
             "~utilities/*": [
                 "./source/utilities/*"
-            ]
+            ],
         },
 
-        "strict": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "strictFunctionTypes": true,
-        "noImplicitThis": true,
-        "alwaysStrict": true,
+        "outDir": "distribution",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
 
+        "declaration": true,
+        "declarationDir": "distribution",
+        "sourceMap": true,
+        "allowJs": false,
+        "esModuleInterop": true,
+        "downlevelIteration": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "resolveJsonModule": true,
+
+        "strict": true,
+        "strictNullChecks": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
         "noUnusedLocals": false,
         "noUnusedParameters": false,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "esModuleInterop": true,
 
-        "target": "es6",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "declaration": false,
-
-        "typeRoots": ["node_modules/@types"],
-
-        "rootDir": "source",
-        "outDir": "build",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
 
         "plugins": [
             {
