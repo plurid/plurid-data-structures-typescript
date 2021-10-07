@@ -90,16 +90,22 @@ class Cacher<T = any> {
                 data,
             },
         );
+
+        return true;
     }
 
     public unset(
         index: string,
     ) {
         this.objects.delete(index);
+
+        return true;
     }
 
     public reset() {
         this.objects = new Map();
+
+        return true;
     }
 }
 // #endregion module
