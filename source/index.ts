@@ -1,12 +1,12 @@
 // #region imports
     // #region internal
-    import Cacher from './data-structures/Cacher';
+    import Cacher from './structures/Cacher';
 
     import LinkedList, {
         LinkedListNode,
-    } from './data-structures/LinkedList';
+    } from './structures/LinkedList';
 
-    import PieceTable from './data-structures/PieceTable';
+    import PieceTable from './structures/PieceTable';
     // #endregion internal
 // #endregion imports
 
@@ -14,6 +14,9 @@
 
 
 // #region exports
+export * from './data/interfaces';
+
+
 export {
     Cacher,
 

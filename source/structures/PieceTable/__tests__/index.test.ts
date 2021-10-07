@@ -1,7 +1,12 @@
-import PieceTable from '../';
+// #region imports
+    // #region external
+    import PieceTable from '../';
+    // #endregion external
+// #endregion imports
 
 
 
+// #region module
 describe('PieceTable', () => {
     it('basic test - insert()', () => {
         const pieceTable = new PieceTable('original string');
@@ -25,3 +30,4 @@ describe('PieceTable', () => {
         expect(text).toBe('original string\ntext');
     });
 });
+// #endregion module

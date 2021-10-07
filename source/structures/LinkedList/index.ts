@@ -1,3 +1,4 @@
+// #region module
 export class LinkedListNode<T> {
     public element: T;
     public previous: LinkedListNode<T> | null;
@@ -11,7 +12,6 @@ export class LinkedListNode<T> {
         this.next = null;
     }
 }
-
 
 
 class LinkedList<T> {
@@ -217,6 +217,10 @@ class LinkedList<T> {
         return list;
     }
 }
+// #endregion module
 
 
+
+// #region exports
 export default LinkedList;
+// #endregion exports

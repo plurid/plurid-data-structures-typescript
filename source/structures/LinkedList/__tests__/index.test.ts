@@ -1,7 +1,17 @@
-import LinkedList from '../';
+// #region imports
+    // #region libraries
+    import util from 'util';
+    // #endregion libraries
 
-const util = require('util');
 
+    // #region external
+    import LinkedList from '../';
+    // #endregion external
+// #endregion imports
+
+
+
+// #region module
 describe('LinkedList', () => {
     it('basic', () => {
         // creating an object for the
@@ -78,3 +88,4 @@ describe('LinkedList', () => {
         expect(true).toBeTruthy();
     });
 });
+// #endregion module
