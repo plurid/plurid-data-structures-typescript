@@ -39,9 +39,33 @@
 
 The package contains the following data structures
 
++ [Batcher](#batcher)
 + [Cacher](#cacher)
 + [LinkedList](#linkedlist)
 + [PieceTable](#piecetable)
+
+
+### Batcher
+
+``` typescript
+import {
+    Batcher,
+} from '@plurid/plurid-data-structures';
+
+
+const batcher = new Batcher<string>(
+    (batch) => {
+        console.log(batch);
+    },
+    {
+        size: 2,
+    },
+);
+
+batcher.push('one');
+batcher.push('two');
+batcher.push('three');
+```
 
 
 ### Cacher
