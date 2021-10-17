@@ -60,18 +60,25 @@ class Batcher<T> {
         }
     }
 
-
-    public push(
-        data: T,
-    ) {
-        this.data.push(data);
-
+    /**
+     * TODO?: throttle/debounce the method
+     */
+    private setInterval() {
         if (!this.interval) {
             this.interval = setInterval(
                 () => this.act(),
                 this.options.time,
             );
         }
+    }
+
+
+    public push(
+        data: T,
+    ) {
+        this.data.push(data);
+
+        this.setInterval();
     }
 }
 // #endregion module
