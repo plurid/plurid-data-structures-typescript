@@ -17,7 +17,7 @@ class Batcher<T> {
 
 
     constructor(
-        action: (batch: T[]) => Promise<void>,
+        action: (batch: T[]) => Promise<void> | void,
         options?: Partial<BatcherOptions>,
     ) {
         this.action = action;
