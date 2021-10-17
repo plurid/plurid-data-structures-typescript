@@ -1,5 +1,6 @@
 // #region imports
     // #region internal
+    import Batcher from './structures/Batcher';
     import Cacher from './structures/Cacher';
 
     import LinkedList, {
@@ -19,6 +20,7 @@ export * from './data/constants';
 
 
 export {
+    Batcher,
     Cacher,
 
     LinkedList,
