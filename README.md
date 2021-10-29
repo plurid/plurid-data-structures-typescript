@@ -48,6 +48,8 @@ The package contains the following data structures
 
 ### Batcher
 
+Runs a batched `action` of `size` at certain `time` after `push`ing into the `Batcher`.
+
 ``` typescript
 import {
     Batcher,
@@ -70,6 +72,8 @@ batcher.push('three');
 
 
 ### Cacher
+
+Caches by id a generic data structure.
 
 ``` typescript
 import {
@@ -158,6 +162,8 @@ console.log('freshC', freshC);
 
 ### LinkedList
 
+`LinkedList` implementation.
+
 ``` typescript
 import {
     LinkedList,
@@ -171,6 +177,8 @@ linkedList.add(20);
 
 
 ###  PieceTable
+
+`PieceTable` implementation.
 
 ``` typescript
 import {
