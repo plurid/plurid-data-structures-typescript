@@ -29,12 +29,22 @@ class DeposedString {
     }
 
 
+    /**
+     * Load `DeposedString` stages.
+     *
+     * @param data
+     */
     public load(
         data: DeposedStringStages,
     ) {
         this.stages = data;
     }
 
+    /**
+     * Extract the internal state of the `DeposedString`.
+     *
+     * @returns
+     */
     public unload() {
         return {
             initial: this.initial,
@@ -42,10 +52,15 @@ class DeposedString {
         };
     }
 
+    /**
+     * Push a new `value` unto the `stages` stack.
+     *
+     * @param value
+     */
     public push(
         value: string,
     ) {
-        const currentValue = this.get(this.length());
+        const currentValue = this.get();
         const stage = generateStage(currentValue, value);
 
         if (stage.length > 0) {
@@ -53,6 +68,12 @@ class DeposedString {
         }
     }
 
+    /**
+     * Get the string at `index`. If no `index` gets the last string.
+     *
+     * @param index
+     * @returns
+     */
     public get(
         index?: number,
     ): string {
@@ -69,6 +90,11 @@ class DeposedString {
         );
     }
 
+    /**
+     * Get the count of string composition stages.
+     *
+     * @returns
+     */
     public length() {
         return this.stages.length;
     }
