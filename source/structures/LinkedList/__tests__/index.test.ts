@@ -83,7 +83,7 @@ describe('LinkedList', () => {
         ll.insertAt(element1, 1);
         ll.add(element2);
 
-        console.log(ll.print_list());
+        // console.log(ll.print_list());
 
         expect(true).toBeTruthy();
     });
