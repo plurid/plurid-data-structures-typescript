@@ -36,6 +36,7 @@
         "clean": "rm -rf ./distribution",
         "lint": "eslint ./source/index.ts",
         "test": "jest -c ./configurations/jest.config.js --coverage ./source",
+        "test.source": "jest -c ./configurations/jest.config.js",
         "build.removeTests": "rm -rf `find ./distribution/ -type d -name __tests__`",
         "start": "yarn clean && rollup -c -w",
         "build.development": "yarn clean && rollup -c",
