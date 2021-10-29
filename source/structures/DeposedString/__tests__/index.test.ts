@@ -87,7 +87,6 @@ describe('DeposedString', () => {
         const unload = deposedString.unload();
         expect(unload.initial).toEqual('');
         expect(unload.stages.length).toEqual(2);
-        // console.log(JSON.stringify(unload, null, 4));
     });
 });
 // #endregion module
