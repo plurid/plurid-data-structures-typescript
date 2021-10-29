@@ -35,6 +35,13 @@ class DeposedString {
         this.stages = data;
     }
 
+    public unload() {
+        return {
+            initial: this.initial,
+            stages: this.stages,
+        };
+    }
+
     public push(
         value: string,
     ) {

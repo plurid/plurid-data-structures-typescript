@@ -99,11 +99,18 @@ const groupModifiers = (
             bIndex,
         } = line;
 
-        if (aIndex === bIndex) {
+        const aEqualB = aIndex === bIndex;
+        const aRemoved = aIndex === -1;
+        const bRemoved = bIndex === -1;
+
+        if (
+            aEqualB
+            || (!aRemoved && !bRemoved)
+        ) {
             collectSteps();
 
             type = '';
-        } else if (aIndex === -1) {
+        } else if (aRemoved) {
             if (type === '+') {
                 temporaryStep.push(line);
 
@@ -121,7 +128,7 @@ const groupModifiers = (
                     line,
                 );
             }
-        } else if (bIndex === -1) {
+        } else if (bRemoved) {
             if (type === '-') {
                 temporaryStep.push(line);
 
