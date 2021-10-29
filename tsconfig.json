@@ -11,9 +11,12 @@
             "~data/*": [
                 "./source/data/*"
             ],
+            "~libraries/*": [
+                "./source/libraries/*"
+            ],
             "~utilities/*": [
                 "./source/utilities/*"
-            ],
+            ]
         },
 
         "outDir": "distribution",
