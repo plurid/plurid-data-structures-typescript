@@ -90,6 +90,8 @@ cache.reset(); // true
 
 ### DeposedString
 
+Computes differences between strings after each `push` and stores them as internal `stages`. At `get` the string is recomposed starting from the initial string following through all the steps of the stages.
+
 ``` typescript
 import {
     DeposedString,
