@@ -157,6 +157,7 @@ const processModifiers = (
     modifiers: any[],
 ) => {
     const changes: DeposedStringStageStep[] = [];
+    let offset = 0;
 
     for (const modifier of modifiers) {
         const {
@@ -164,10 +165,11 @@ const processModifiers = (
             data,
         } = modifier;
 
-        const value = data.reduce((accumulator: any, item: any) => accumulator + item.line, '');
+        const value = data.reduce((accumulator: string, item: any) => accumulator + item.line, '');
 
         switch (type) {
             case '+': {
+                offset += value.length;
                 const startIndex = data[0].bIndex;
                 const change: DeposedStringStageStepAdd = [
                     '+',
@@ -178,7 +180,8 @@ const processModifiers = (
                 break;
             }
             case '-': {
-                const startIndex = data[0].aIndex;
+                const startIndex = offset + data[0].aIndex;
+                offset -= value.length;
                 const change: DeposedStringStageStepRemove = [
                     '-',
                     startIndex,
