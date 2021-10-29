@@ -33,13 +33,14 @@
         "npm": ">=6"
     },
     "scripts": {
-        "spec": "jest",
-        "lint": "eslint ./source/index.ts",
         "clean": "rm -rf ./distribution",
+        "lint": "eslint ./source/index.ts",
+        "test": "jest -c ./configurations/jest.config.js --coverage ./source",
+        "build.removeTests": "rm -rf `find ./distribution/ -type d -name __tests__`",
         "start": "yarn clean && rollup -c -w",
-        "build.dev": "yarn clean && rollup -c",
-        "build.prod": "rollup -c --environment BUILD:production",
-        "build": "yarn clean && yarn lint && yarn spec && yarn build.prod",
+        "build.development": "yarn clean && rollup -c",
+        "build.production": "rollup -c --environment BUILD:production",
+        "build": "yarn clean && yarn lint && yarn test && yarn build.production && yarn build.removeTests",
         "prepublishOnly": "yarn build"
     },
     "devDependencies": {
