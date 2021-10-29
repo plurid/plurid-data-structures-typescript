@@ -54,8 +54,12 @@ class DeposedString {
     }
 
     public get(
-        index: number,
-    ) {
+        index?: number,
+    ): string {
+        if (typeof index === 'undefined') {
+            return this.get(this.length());
+        }
+
         return getComposedString(
             index,
             {
