@@ -41,6 +41,7 @@ The package contains the following data structures
 
 + [Batcher](#batcher)
 + [Cacher](#cacher)
++ [DeposedString](#deposedstring)
 + [LinkedList](#linkedlist)
 + [PieceTable](#piecetable)
 
@@ -84,6 +85,33 @@ const b = cache.get('one') // 'two'
 
 cache.unset('one') // true
 cache.reset(); // true
+```
+
+
+### DeposedString
+
+``` typescript
+import {
+    DeposedString,
+} from '@plurid/plurid-data-structures';
+
+
+const deposedString = new DeposedString('');
+
+deposedString.push('a1b2c3');
+deposedString.push('a1c3');
+deposedString.push('13d4');
+
+const a = deposedString.get(0); // 'a1b2c3'
+const b = deposedString.get(1); // 'a1c3'
+const c = deposedString.get(2); // '13d4'
+
+const unload = deposedString.unload(); // extract the stages
+
+const freshDeposedString = new DeposedString('');
+freshDeposedString.load(unload.stages); // load the stages into a new DeposedString
+
+const freshC = freshDeposedString.get(2); // '13d4'
 ```
 
 
