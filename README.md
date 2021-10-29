@@ -105,13 +105,52 @@ deposedString.push('13d4');
 const a = deposedString.get(0); // 'a1b2c3'
 const b = deposedString.get(1); // 'a1c3'
 const c = deposedString.get(2); // '13d4'
+console.log('a, b, c', a, b, c);
 
 const unload = deposedString.unload(); // extract the stages
+console.log('unload', JSON.stringify(unload, null, 4));
+// unload -> {
+//     "initial": "",
+//     "stages": [
+//         [
+//             [
+//                 "+",
+//                 0,
+//                 "a1b2c3"
+//             ],
+//         ],
+//         [
+//             [
+//                 "-",
+//                 2,
+//                 2,
+//             ],
+//         ],
+//         [
+//             [
+//                 "-",
+//                 0,
+//                 1,
+//             ],
+//             [
+//                 "-",
+//                 1,
+//                 1,
+//             ],
+//             [
+//                 "+",
+//                 2,
+//                 "d4",
+//             ],
+//         ],
+//     ],
+// };
 
 const freshDeposedString = new DeposedString('');
 freshDeposedString.load(unload.stages); // load the stages into a new DeposedString
 
 const freshC = freshDeposedString.get(2); // '13d4'
+console.log('freshC', freshC);
 ```
 
 
