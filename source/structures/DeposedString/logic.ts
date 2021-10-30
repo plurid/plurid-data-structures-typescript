@@ -1,6 +1,8 @@
 // #region imports
     // #region external
-    import patienceDiff from '~libraries/jonTrent/patienceDiff';
+    import patienceDiff, {
+        PatienceDiffLine,
+    } from '~libraries/jonTrent/patienceDiff';
 
     import {
         DeposedStringStage,
@@ -17,14 +19,12 @@
 // #region module
 export const getComposedString = (
     index: number,
-    data: {
-        start: string;
-        stages: DeposedStringStages;
-    },
+    start: string,
+    stages: DeposedStringStages,
 ) => {
-    let dataValue = data.start;
+    let dataValue = start;
 
-    for (const [stageIndex, stage] of data.stages.entries()) {
+    for (const [stageIndex, stage] of stages.entries()) {
         if (index < stageIndex) {
             return dataValue;
         }
@@ -36,17 +36,13 @@ export const getComposedString = (
                 case '+': {
                     const start = step[1];
                     const value = step[2];
-                    // console.log('dataValue add', dataValue, dataValue.slice(0, start), dataValue.slice(start));
                     dataValue = dataValue.slice(0, start) + value + dataValue.slice(start);
-                    // console.log('dataValue after add', dataValue);
                     break;
                 }
                 case '-': {
                     const start = step[1];
                     const length = step[2];
-                    // console.log('dataValue remove', dataValue, dataValue.slice(0, start), dataValue.slice(start + length));
                     dataValue = dataValue.slice(0, start) + dataValue.slice(start + length);
-                    // console.log('dataValue after remove', dataValue);
                     break;
                 }
             }
@@ -58,19 +54,29 @@ export const getComposedString = (
 
 
 
+export interface DesposedStringModifier {
+    type: '+' | '-';
+    data: PatienceDiffLine[];
+}
+
+
 const groupModifiers = (
-    lines: any[],
+    lines: PatienceDiffLine[],
 ) => {
     const linesLength = lines.length;
 
-    let type = '';
-    let temporaryStep: any[] = [];
-    let steps: any[] = [];
+    let type: '+' | '-' | '' = '';
+    let temporaryStep: PatienceDiffLine[] = [];
+    let modifiers: DesposedStringModifier[] = [];
 
 
-    const collectSteps = () => {
+    const collectModifiers = () => {
+        if (!type) {
+            return;
+        }
+
         if (temporaryStep.length > 0) {
-            steps.push({
+            modifiers.push({
                 type,
                 data: temporaryStep,
             });
@@ -78,12 +84,16 @@ const groupModifiers = (
         }
     }
 
-    const endSteps = (
+    const endModifiers = (
         index: any,
         line: any,
     ) => {
+        if (!type) {
+            return;
+        }
+
         if (index === linesLength - 1) {
-            steps.push({
+            modifiers.push({
                 type,
                 data: [
                     line,
@@ -107,7 +117,7 @@ const groupModifiers = (
             aEqualB
             || (!aRemoved && !bRemoved)
         ) {
-            collectSteps();
+            collectModifiers();
 
             type = '';
         } else if (aRemoved) {
@@ -115,15 +125,15 @@ const groupModifiers = (
                 temporaryStep.push(line);
 
                 if (index === linesLength - 1) {
-                    collectSteps();
+                    collectModifiers();
                 }
             } else {
-                collectSteps();
+                collectModifiers();
 
                 type = '+';
                 temporaryStep.push(line);
 
-                endSteps(
+                endModifiers(
                     index,
                     line,
                 );
@@ -133,15 +143,15 @@ const groupModifiers = (
                 temporaryStep.push(line);
 
                 if (index === linesLength - 1) {
-                    collectSteps();
+                    collectModifiers();
                 }
             } else {
-                collectSteps();
+                collectModifiers();
 
                 type = '-';
                 temporaryStep.push(line);
 
-                endSteps(
+                endModifiers(
                     index,
                     line,
                 );
@@ -149,12 +159,12 @@ const groupModifiers = (
         }
     }
 
-    return steps;
+    return modifiers;
 }
 
 
 const processModifiers = (
-    modifiers: any[],
+    modifiers: DesposedStringModifier[],
 ) => {
     const changes: DeposedStringStageStep[] = [];
     let offset = 0;
@@ -165,7 +175,7 @@ const processModifiers = (
             data,
         } = modifier;
 
-        const value = data.reduce((accumulator: string, item: any) => accumulator + item.line, '');
+        const value = data.reduce((accumulator, item) => accumulator + item.line, '');
 
         switch (type) {
             case '+': {
@@ -190,6 +200,8 @@ const processModifiers = (
                 changes.push(change);
                 break;
             }
+            // case 'm':
+            //     break;
         }
     }
 

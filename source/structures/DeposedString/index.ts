@@ -83,10 +83,8 @@ class DeposedString {
 
         return getComposedString(
             index,
-            {
-                start: this.initial,
-                stages: this.stages,
-            },
+            this.initial,
+            this.stages,
         );
     }
 
