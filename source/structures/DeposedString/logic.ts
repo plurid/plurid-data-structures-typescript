@@ -1,8 +1,8 @@
 // #region imports
     // #region external
     import {
-        patienceDiff,
-        PatienceDiffLine,
+        patienceDiffPlus,
+        PatienceDiffPlusLine,
     } from '~libraries/jonTrent';
 
     import {
@@ -11,6 +11,9 @@
         DeposedStringStageStep,
         DeposedStringStageStepAdd,
         DeposedStringStageStepRemove,
+        DeposedStringStageStepKind,
+
+        DesposedStringModifier,
     } from '~data/interfaces/DeposedString';
     // #endregion external
 // #endregion imports
@@ -55,19 +58,13 @@ export const getComposedString = (
 
 
 
-export interface DesposedStringModifier {
-    type: '+' | '-';
-    data: PatienceDiffLine[];
-}
-
-
 const groupModifiers = (
-    lines: PatienceDiffLine[],
+    lines: PatienceDiffPlusLine[],
 ) => {
     const linesLength = lines.length;
 
-    let type: '+' | '-' | '' = '';
-    let temporaryStep: PatienceDiffLine[] = [];
+    let type: DeposedStringStageStepKind | '' = '';
+    let temporaryStep: PatienceDiffPlusLine[] = [];
     let modifiers: DesposedStringModifier[] = [];
 
 
@@ -103,6 +100,30 @@ const groupModifiers = (
         }
     }
 
+    const runChecks = (
+        checkType: DeposedStringStageStepKind,
+        index: number,
+        line: PatienceDiffPlusLine,
+    ) => {
+        if (type === checkType) {
+            temporaryStep.push(line);
+
+            if (index === linesLength - 1) {
+                collectModifiers();
+            }
+        } else {
+            collectModifiers();
+
+            type = checkType;
+            temporaryStep.push(line);
+
+            endModifiers(
+                index,
+                line,
+            );
+        }
+    }
+
 
     for (const [index, line] of lines.entries()) {
         const {
@@ -116,47 +137,29 @@ const groupModifiers = (
 
         if (
             aEqualB
-            || (!aRemoved && !bRemoved)
+            || (!aRemoved && !bRemoved && !line.moved)
         ) {
             collectModifiers();
 
             type = '';
         } else if (aRemoved) {
-            if (type === '+') {
-                temporaryStep.push(line);
-
-                if (index === linesLength - 1) {
-                    collectModifiers();
-                }
-            } else {
-                collectModifiers();
-
-                type = '+';
-                temporaryStep.push(line);
-
-                endModifiers(
-                    index,
-                    line,
-                );
-            }
+            runChecks(
+                '+',
+                index,
+                line,
+            );
         } else if (bRemoved) {
-            if (type === '-') {
-                temporaryStep.push(line);
-
-                if (index === linesLength - 1) {
-                    collectModifiers();
-                }
-            } else {
-                collectModifiers();
-
-                type = '-';
-                temporaryStep.push(line);
-
-                endModifiers(
-                    index,
-                    line,
-                );
-            }
+            runChecks(
+                '-',
+                index,
+                line,
+            );
+        } else if (line.moved) {
+            runChecks(
+                'm',
+                index,
+                line,
+            );
         }
     }
 
@@ -201,8 +204,8 @@ const processModifiers = (
                 changes.push(change);
                 break;
             }
-            // case 'm':
-            //     break;
+            case 'm':
+                break;
         }
     }
 
@@ -218,13 +221,13 @@ export const generateStage = (
         return [];
     }
 
-    const patienceDiffResult = patienceDiff(
+    const patienceDiffPlusResult = patienceDiffPlus(
         baseValue,
         differenceValue,
     );
 
     const modifiers = groupModifiers(
-        patienceDiffResult.lines,
+        patienceDiffPlusResult.lines,
     );
 
     const changes = processModifiers(
