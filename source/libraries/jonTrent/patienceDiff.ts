@@ -65,7 +65,7 @@ function patienceDiff(
         lo: number,
         hi: number,
     ) {
-        const lineMap = new Map();
+        const lineMap = new Map<string, any>();
 
         for (let i = lo; i <= hi; i++) {
             let line = arr[i];
@@ -141,9 +141,9 @@ function patienceDiff(
      * @returns
      */
     function longestCommonSubsequence(
-        abMap: any,
+        abMap: Map<any, any>,
     ) {
-        var ja: any[] = [];
+        const ja: any[] = [];
 
         // First, walk the list creating the jagged array.
         abMap.forEach((val: any, key: any, map: any) => {
@@ -190,10 +190,10 @@ function patienceDiff(
      * `aMove` and `bMove` will contain the lines that don't match, and will be returned
      * for possible searching of lines that moved.
      */
-    let aMove = [];
-    let aMoveIndex = [];
-    let bMove = [];
-    let bMoveIndex = [];
+    let aMove: string[] = [];
+    let aMoveIndex: number[] = [];
+    let bMove: string[] = [];
+    let bMoveIndex: number[] = [];
 
 
 
@@ -304,7 +304,7 @@ function patienceDiff(
         aHi: number,
         bLo: number,
         bHi: number,
-        uniqueCommonMap?: any,
+        uniqueCommonMap?: Map<any, any>,
     ) {
         const x = longestCommonSubsequence(
             uniqueCommonMap || uniqueCommon(aLines, aLo, aHi, bLines, bLo, bHi),
