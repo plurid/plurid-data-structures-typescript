@@ -120,41 +120,21 @@ console.log('a, b, c', a, b, c);
 const unload = deposedString.unload(); // extract the stages
 console.log('unload', JSON.stringify(unload, null, 4));
 // unload -> {
-//     "initial": "",
-//     "stages": [
+//     initial: '',
+//     stages: [
 //         [
-//             [
-//                 "+",
-//                 0,
-//                 "a1b2c3"
-//             ],
+//             [ '+', 0, 'a1b2c3' ],
 //         ],
 //         [
-//             [
-//                 "-",
-//                 2,
-//                 2,
-//             ],
+//             [ '-', 2, 2 ],
 //         ],
 //         [
-//             [
-//                 "-",
-//                 0,
-//                 1,
-//             ],
-//             [
-//                 "-",
-//                 1,
-//                 1,
-//             ],
-//             [
-//                 "+",
-//                 2,
-//                 "d4",
-//             ],
+//             [ '-', 0, 1 ],
+//             [ '-', 1, 1 ],
+//             [ '+', 2, 'd4' ],
 //         ],
 //     ],
-// };
+// }
 
 const freshDeposedString = new DeposedString('');
 freshDeposedString.load(unload.stages); // load the stages into a new DeposedString
