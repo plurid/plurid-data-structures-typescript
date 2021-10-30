@@ -5,6 +5,13 @@ export type DeposedStringStageStepAdd = [
     string, // value
 ];
 
+// export type DeposedStringStageStepMove = [
+//     'm',    // type
+//     number, // from
+//     number, // length
+//     number, // to
+// ];
+
 export type DeposedStringStageStepRemove = [
     '-',    // type
     number, // start
@@ -13,6 +20,7 @@ export type DeposedStringStageStepRemove = [
 
 export type DeposedStringStageStep =
     | DeposedStringStageStepAdd
+    // | DeposedStringStageStepMove
     | DeposedStringStageStepRemove;
 
 export type DeposedStringStage = DeposedStringStageStep[];
