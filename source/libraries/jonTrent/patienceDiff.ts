@@ -40,19 +40,25 @@ function patienceDiff(
     aLines: string,
     bLines: string,
 ) {
-    // findUnique finds all unique values in arr[lo..hi], inclusive.  This
-    // function is used in preparation for determining the longest common
-    // subsequence.  Specifically, it first reduces the array range in question
-    // to unique values.
-    //
-    // Returns an ordered Map, with the arr[i] value as the Map key and the
-    // array index i as the Map value.
+    /**
+     * `findUnique` finds all unique values in `arr[lo..hi]`, inclusive.
+     * This function is used in preparation for determining the longest common subsequence.
+     * Specifically, it first reduces the array range in question to unique values.
+     *
+     * Returns an ordered `Map`, with the `arr[i]` value as the `Map` key
+     * and the array index `i` as the `Map` value.
+     *
+     * @param arr
+     * @param lo
+     * @param hi
+     * @returns
+     */
     function findUnique(
-        arr: any,
-        lo: any,
-        hi: any,
+        arr: string,
+        lo: number,
+        hi: number,
     ) {
-        var lineMap = new Map();
+        const lineMap = new Map();
 
         for (let i = lo; i <= hi; i++) {
             let line = arr[i];
@@ -76,21 +82,31 @@ function patienceDiff(
     }
 
 
-    // uniqueCommon finds all the unique common entries between aArray[aLo..aHi]
-    // and bArray[bLo..bHi], inclusive.  This function uses findUnique to pare
-    // down the aArray and bArray ranges first, before then walking the comparison
-    // between the two arrays.
-    //
-    // Returns an ordered Map, with the Map key as the common line between aArray
-    // and bArray, with the Map value as an object containing the array indexes of
-    // the matching unique lines.
+    /**
+     * `uniqueCommon` finds all the unique common entries between `aArray[aLo..aHi]`
+     * and `bArray[bLo..bHi]`, inclusive.  This function uses `findUnique` to pare
+     * down the `aArray` and `bArray` ranges first, before then walking the comparison
+     * between the two arrays.
+     *
+     * Returns an ordered `Map`, with the `Map` key as the common line between `aArray`
+     * and `bArray`, with the `Map` value as an object containing the array indexes of
+     * the matching unique lines.
+     *
+     * @param aArray
+     * @param aLo
+     * @param aHi
+     * @param bArray
+     * @param bLo
+     * @param bHi
+     * @returns
+     */
     function uniqueCommon(
-        aArray: any,
-        aLo: any,
-        aHi: any,
-        bArray: any,
-        bLo: any,
-        bHi: any,
+        aArray: string,
+        aLo: number,
+        aHi: number,
+        bArray: string,
+        bLo: number,
+        bHi: number,
     ) {
         let ma = findUnique(aArray, aLo, aHi);
         let mb = findUnique(bArray, bLo, bHi);
@@ -107,11 +123,16 @@ function patienceDiff(
     }
 
 
-    // longestCommonSubsequence takes an ordered Map from the function uniqueCommon
-    // and determines the Longest Common Subsequence (LCS).
-    //
-    // Returns an ordered array of objects containing the array indexes of the
-    // matching lines for a LCS.
+    /**
+     * `longestCommonSubsequence` takes an ordered `Map` from the function `uniqueCommon`
+     * and determines the Longest Common Subsequence (LCS).
+     *
+     * Returns an ordered array of objects containing the array indexes of the
+     * matching lines for a LCS.
+     *
+     * @param abMap
+     * @returns
+     */
     function longestCommonSubsequence(
         abMap: any,
     ) {
@@ -149,17 +170,19 @@ function patienceDiff(
     }
 
 
-    // "result" is the array used to accumulate the aLines that are deleted, the
-    // lines that are shared between aLines and bLines, and the bLines that were
-    // inserted.
+    /**
+     * `result` is the array used to accumulate the aLines that are deleted, the
+     * lines that are shared between `aLines` and `bLines`, and the `bLines` that were inserted.
+     */
     let result: any[] = [];
     let deleted = 0;
     let inserted = 0;
 
 
-    // aMove and bMove will contain the lines that don't match, and will be returned
-    // for possible searching of lines that moved.
-
+    /**
+     * `aMove` and `bMove` will contain the lines that don't match, and will be returned
+     * for possible searching of lines that moved.
+     */
     let aMove = [];
     let aMoveIndex = [];
     let bMove = [];
@@ -167,12 +190,18 @@ function patienceDiff(
 
 
 
-    // addToResult simply pushes the latest value onto the "result" array.  This
-    // array captures the diff of the line, aIndex, and bIndex from the aLines
-    // and bLines array.
+    /**
+     * `addToResult` simply pushes the latest value onto the `result` array.
+     *
+     * This array captures the diff of the line, `aIndex`, and `bIndex` from the `aLines`
+     * and `bLines` array.
+     *
+     * @param aIndex
+     * @param bIndex
+     */
     function addToResult(
-        aIndex: any,
-        bIndex: any,
+        aIndex: number,
+        bIndex: number,
     ) {
         if (bIndex < 0) {
             aMove.push(aLines[aIndex]);
@@ -192,14 +221,22 @@ function patienceDiff(
     }
 
 
-    // addSubMatch handles the lines between a pair of entries in the LCS.  Thus,
-    // this function might recursively call recurseLCS to further match the lines
-    // between aLines and bLines.
+    /**
+     * `addSubMatch` handles the lines between a pair of entries in the LCS.
+     *
+     * Thus, this function might recursively call `recurseLCS` to further match the lines
+     * between `aLines` and `bLines`.
+     *
+     * @param aLo
+     * @param aHi
+     * @param bLo
+     * @param bHi
+     */
     function addSubMatch(
-        aLo: any,
-        aHi: any,
-        bLo: any,
-        bHi: any,
+        aLo: number,
+        aHi: number,
+        bLo: number,
+        bHi: number,
     ) {
         // Match any lines at the beginning of aLines and bLines.
         while (aLo <= aHi && bLo <= bHi && aLines[aLo] === bLines[bLo]) {
@@ -242,18 +279,29 @@ function patienceDiff(
     }
 
 
-    // recurseLCS finds the longest common subsequence (LCS) between the arrays
-    // aLines[aLo..aHi] and bLines[bLo..bHi] inclusive.  Then for each subsequence
-    // recursively performs another LCS search (via addSubMatch), until there are
-    // none found, at which point the subsequence is dumped to the result.
+    /**
+     * `recurseLCS` finds the longest common subsequence (LCS) between the arrays
+     * `aLines[aLo..aHi]` and `bLines[bLo..bHi]` inclusive.
+     *
+     * Then for each subsequence recursively performs another LCS search (via `addSubMatch`),
+     * until there are none found, at which point the subsequence is dumped to the result.
+     *
+     * @param aLo
+     * @param aHi
+     * @param bLo
+     * @param bHi
+     * @param uniqueCommonMap
+     */
     function recurseLCS(
-        aLo: any,
-        aHi: any,
-        bLo: any,
-        bHi: any,
+        aLo: number,
+        aHi: number,
+        bLo: number,
+        bHi: number,
         uniqueCommonMap?: any,
     ) {
-        var x = longestCommonSubsequence(uniqueCommonMap || uniqueCommon(aLines, aLo, aHi, bLines, bLo, bHi));
+        const x = longestCommonSubsequence(
+            uniqueCommonMap || uniqueCommon(aLines, aLo, aHi, bLines, bLo, bHi),
+        );
 
         if (x.length === 0) {
             addSubMatch(aLo, aHi, bLo, bHi);
