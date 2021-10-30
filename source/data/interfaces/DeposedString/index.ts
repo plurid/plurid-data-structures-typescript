@@ -9,7 +9,10 @@
 
 
 // #region module
-export type DeposedStringStageStepKind = '+' | '-' | 'm';
+export type DeposedStringStageStepKind =
+    |'+'
+    // | 'm'
+    | '-';
 
 export type DeposedStringStageStepAdd = [
     '+',    // type
@@ -17,12 +20,12 @@ export type DeposedStringStageStepAdd = [
     string, // value
 ];
 
-export type DeposedStringStageStepMove = [
-    'm',    // type
-    number, // from
-    number, // length
-    number, // to
-];
+// export type DeposedStringStageStepMove = [
+//     'm',    // type
+//     number, // from
+//     number, // length
+//     number, // to
+// ];
 
 export type DeposedStringStageStepRemove = [
     '-',    // type
@@ -32,7 +35,7 @@ export type DeposedStringStageStepRemove = [
 
 export type DeposedStringStageStep =
     | DeposedStringStageStepAdd
-    | DeposedStringStageStepMove
+    // | DeposedStringStageStepMove
     | DeposedStringStageStepRemove;
 
 export type DeposedStringStage = DeposedStringStageStep[];

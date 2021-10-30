@@ -1,8 +1,10 @@
 // #region imports
     // #region external
     import {
-        patienceDiffPlus,
-        PatienceDiffPlusLine,
+        patienceDiff,
+        PatienceDiffLine,
+        // patienceDiffPlus,
+        // PatienceDiffPlusLine
     } from '~libraries/jonTrent';
 
     import {
@@ -10,7 +12,7 @@
         DeposedStringStages,
         DeposedStringStageStep,
         DeposedStringStageStepAdd,
-        DeposedStringStageStepMove,
+        // DeposedStringStageStepMove,
         DeposedStringStageStepRemove,
         DeposedStringStageStepKind,
 
@@ -55,26 +57,26 @@ export const getComposedString = (
                     dataValue = dataValue.slice(0, start) + dataValue.slice(start + length);
                     break;
                 }
-                case 'm': {
-                    // console.log('m', step, dataValue);
-                    const from = step[1];
-                    const length = step[2];
-                    const to = step[3];
+                // case 'm': {
+                //     // console.log('m', step, dataValue);
+                //     const from = step[1];
+                //     const length = step[2];
+                //     const to = step[3];
 
-                    const segment = dataValue.slice(from, from + length);
-                    // console.log('segment', segment);
+                //     const segment = dataValue.slice(from, from + length);
+                //     // console.log('segment', segment);
 
-                    // remove segment from previous location
-                    // console.log('dataValue before removed', dataValue);
-                    dataValue = dataValue.slice(0, from) + dataValue.slice(from + length);
-                    // console.log('dataValue segment removed', dataValue);
+                //     // remove segment from previous location
+                //     // console.log('dataValue before removed', dataValue);
+                //     dataValue = dataValue.slice(0, from) + dataValue.slice(from + length);
+                //     // console.log('dataValue segment removed', dataValue);
 
-                    // insert segment into new location
-                    // console.log('dataValue before inserted', dataValue);
-                    dataValue = dataValue.slice(0, to) + segment + dataValue.slice(from + length);
-                    // console.log('dataValue inserted', dataValue);
-                    break;
-                }
+                //     // insert segment into new location
+                //     // console.log('dataValue before inserted', dataValue);
+                //     dataValue = dataValue.slice(0, to) + segment + dataValue.slice(to + segment.length + 1);
+                //     // console.log('dataValue inserted', dataValue);
+                //     break;
+                // }
             }
         }
     }
@@ -84,13 +86,122 @@ export const getComposedString = (
 
 
 
+// const groupPlusModifiers = (
+//     lines: PatienceDiffPlusLine[],
+// ) => {
+//     const linesLength = lines.length;
+
+//     let type: DeposedStringStageStepKind | '' = '';
+//     let temporaryStep: PatienceDiffLine[] = [];
+//     let modifiers: DesposedStringModifier[] = [];
+
+
+//     const collectModifiers = () => {
+//         if (!type) {
+//             return;
+//         }
+
+//         if (temporaryStep.length > 0) {
+//             modifiers.push({
+//                 type,
+//                 data: temporaryStep,
+//             });
+//             temporaryStep = [];
+//         }
+//     }
+
+//     const endModifiers = (
+//         index: any,
+//         line: any,
+//     ) => {
+//         if (!type) {
+//             return;
+//         }
+
+//         if (index === linesLength - 1) {
+//             modifiers.push({
+//                 type,
+//                 data: [
+//                     line,
+//                 ],
+//             });
+//         }
+//     }
+
+//     const runChecks = (
+//         checkType: DeposedStringStageStepKind,
+//         index: number,
+//         line: PatienceDiffLine,
+//     ) => {
+//         if (type === checkType) {
+//             temporaryStep.push(line);
+
+//             if (index === linesLength - 1) {
+//                 collectModifiers();
+//             }
+//         } else {
+//             collectModifiers();
+
+//             type = checkType;
+//             temporaryStep.push(line);
+
+//             endModifiers(
+//                 index,
+//                 line,
+//             );
+//         }
+//     }
+
+
+//     for (const [index, line] of lines.entries()) {
+//         const {
+//             aIndex,
+//             bIndex,
+//         } = line;
+
+//         const aEqualB = aIndex === bIndex;
+//         const aRemoved = aIndex === -1;
+//         const bRemoved = bIndex === -1;
+
+//         if (
+//             aEqualB
+//             || (!aRemoved && !bRemoved && !line.moved)
+//         ) {
+//             collectModifiers();
+
+//             type = '';
+//         } else if (aRemoved && !line.moved) {
+//             runChecks(
+//                 '+',
+//                 index,
+//                 line,
+//             );
+//         } else if (bRemoved && !line.moved) {
+//             runChecks(
+//                 '-',
+//                 index,
+//                 line,
+//             );
+//         } else if (line.moved && !aRemoved && !bRemoved) {
+//             runChecks(
+//                 'm',
+//                 index,
+//                 line,
+//             );
+//         }
+//     }
+
+//     return modifiers;
+// }
+
+
 const groupModifiers = (
-    lines: PatienceDiffPlusLine[],
+    lines: PatienceDiffLine[],
 ) => {
     const linesLength = lines.length;
 
     let type: DeposedStringStageStepKind | '' = '';
-    let temporaryStep: PatienceDiffPlusLine[] = [];
+    let temporaryStep: PatienceDiffLine[] = [];
     let modifiers: DesposedStringModifier[] = [];
 
 
@@ -129,7 +240,7 @@ const groupModifiers = (
     const runChecks = (
         checkType: DeposedStringStageStepKind,
         index: number,
-        line: PatienceDiffPlusLine,
+        line: PatienceDiffLine,
     ) => {
         if (type === checkType) {
             temporaryStep.push(line);
@@ -163,26 +274,20 @@ const groupModifiers = (
 
         if (
             aEqualB
-            || (!aRemoved && !bRemoved && !line.moved)
+            || (!aRemoved && !bRemoved)
         ) {
             collectModifiers();
 
             type = '';
-        } else if (aRemoved && !line.moved) {
+        } else if (aRemoved) {
             runChecks(
                 '+',
                 index,
                 line,
             );
-        } else if (bRemoved && !line.moved) {
+        } else if (bRemoved) {
             runChecks(
                 '-',
-                index,
-                line,
-            );
-        } else if (line.moved && !aRemoved && !bRemoved) {
-            runChecks(
-                'm',
                 index,
                 line,
             );
@@ -230,18 +335,19 @@ const processModifiers = (
                 changes.push(change);
                 break;
             }
-            case 'm': {
-                const fromIndex = data[0].aIndex;
-                const toIndex = data[0].bIndex;
-                const change: DeposedStringStageStepMove = [
-                    'm',
-                    fromIndex,
-                    value.length,
-                    toIndex,
-                ];
-                changes.push(change);
-                break;
-            }
+            // case 'm': {
+            //     const fromIndex = data[0].aIndex;
+            //     const toIndex = data[0].bIndex;
+            //     // offset += value.length;
+            //     const change: DeposedStringStageStepMove = [
+            //         'm',
+            //         fromIndex,
+            //         value.length,
+            //         toIndex,
+            //     ];
+            //     changes.push(change);
+            //     break;
+            // }
         }
     }
 
@@ -257,21 +363,18 @@ export const generateStage = (
         return [];
     }
 
-    const patienceDiffPlusResult = patienceDiffPlus(
+    const patienceDiffResult = patienceDiff(
         baseValue,
         differenceValue,
     );
-    // console.log('patienceDiffPlusResult', patienceDiffPlusResult);
 
     const modifiers = groupModifiers(
-        patienceDiffPlusResult.lines,
+        patienceDiffResult.lines,
     );
-    // console.log('modifiers', JSON.stringify(modifiers, null, 4));
 
     const changes = processModifiers(
         modifiers,
     );
-    // console.log('changes', JSON.stringify(changes, null, 4));
 
     return changes;
 }
