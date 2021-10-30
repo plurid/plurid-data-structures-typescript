@@ -1,4 +1,11 @@
 // #region module
+export interface PatienceDiffLine {
+    line: string;
+    aIndex: number;
+    bIndex: number;
+}
+
+
 /**
  * https://github.com/jonTrent/PatienceDiff
  *
@@ -174,7 +181,7 @@ function patienceDiff(
      * `result` is the array used to accumulate the aLines that are deleted, the
      * lines that are shared between `aLines` and `bLines`, and the `bLines` that were inserted.
      */
-    let result: any[] = [];
+    let result: PatienceDiffLine[] = [];
     let deleted = 0;
     let inserted = 0;
 
