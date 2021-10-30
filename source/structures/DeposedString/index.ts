@@ -81,6 +81,10 @@ class DeposedString {
             return this.get(this.length());
         }
 
+        if (index < 0) {
+            return '';
+        }
+
         return getComposedString(
             index,
             this.initial,
@@ -104,7 +108,30 @@ class DeposedString {
             return false;
         }
 
-        this.stages.splice(index, 1);
+
+        const stagesBeforeIndex = this.stages.slice(0, index);
+
+        const stagesNumbersAfterIndex: number[] = Array.from(
+            {
+                length: this.length() -1 - index,
+            },
+            (_, i) => index + i + 1,
+        );
+
+        const stringsAfterIndex: string[] = [];
+
+        for (const stageNumber of stagesNumbersAfterIndex) {
+            const stringAfterIndex = this.get(stageNumber);
+            stringsAfterIndex.push(stringAfterIndex);
+        }
+
+
+        this.stages = stagesBeforeIndex;
+
+        for (const stringAfterIndex of stringsAfterIndex) {
+            this.push(stringAfterIndex);
+        }
+
 
         return true;
     }

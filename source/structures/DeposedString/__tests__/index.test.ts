@@ -119,7 +119,41 @@ describe('DeposedString', () => {
         expect(unloadAfterRemove.stages.length).toEqual(2);
 
         const redeposedC = deposedString.get(1);
-        expect(redeposedC).toEqual('abcghi');
+        expect(redeposedC).toEqual(c);
+    });
+
+
+    it('handles remove 2', () => {
+        const a = `abc`;
+        const b = `def`;
+        const c = `abcdefghi`;
+
+        const deposedString = new DeposedString('');
+
+        deposedString.push(a);
+        deposedString.push(b);
+        deposedString.push(c);
+
+        const deposedA = deposedString.get(0);
+        expect(deposedA).toEqual(a);
+
+        const deposedB = deposedString.get(1);
+        expect(deposedB).toEqual(b);
+
+        const deposedC = deposedString.get(2);
+        expect(deposedC).toEqual(c);
+
+        const unload = deposedString.unload();
+        expect(unload.initial).toEqual('');
+        expect(unload.stages.length).toEqual(3);
+
+        deposedString.remove(1);
+
+        const unloadAfterRemove = deposedString.unload();
+        expect(unloadAfterRemove.stages.length).toEqual(2);
+
+        const redeposedC = deposedString.get(1);
+        expect(redeposedC).toEqual(c);
     });
 
 
