@@ -89,6 +89,27 @@ class DeposedString {
     }
 
     /**
+     * Removes the `index` stage.
+     *
+     * @param index
+     */
+    public remove(
+        index: number,
+    ) {
+        if (index < 0) {
+            return false;
+        }
+
+        if (index > this.length()) {
+            return false;
+        }
+
+        this.stages = this.stages.splice(index, 1);
+
+        return true;
+    }
+
+    /**
      * Get the count of string composition stages.
      *
      * @returns
