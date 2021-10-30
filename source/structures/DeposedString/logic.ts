@@ -10,6 +10,7 @@
         DeposedStringStages,
         DeposedStringStageStep,
         DeposedStringStageStepAdd,
+        DeposedStringStageStepMove,
         DeposedStringStageStepRemove,
         DeposedStringStageStepKind,
 
@@ -26,14 +27,19 @@ export const getComposedString = (
     start: string,
     stages: DeposedStringStages,
 ) => {
+    // console.log('start', start);
     let dataValue = start;
 
     for (const [stageIndex, stage] of stages.entries()) {
+        // console.log('dataValue FOR', dataValue, stage);
+
         if (index < stageIndex) {
             return dataValue;
         }
 
-        for (const step  of stage) {
+        for (const step of stage) {
+            // console.log('dataValue FOR STEP', dataValue, step);
+
             const type = step[0];
 
             switch (type) {
@@ -47,6 +53,26 @@ export const getComposedString = (
                     const start = step[1];
                     const length = step[2];
                     dataValue = dataValue.slice(0, start) + dataValue.slice(start + length);
+                    break;
+                }
+                case 'm': {
+                    // console.log('m', step, dataValue);
+                    const from = step[1];
+                    const length = step[2];
+                    const to = step[3];
+
+                    const segment = dataValue.slice(from, from + length);
+                    // console.log('segment', segment);
+
+                    // remove segment from previous location
+                    // console.log('dataValue before removed', dataValue);
+                    dataValue = dataValue.slice(0, from) + dataValue.slice(from + length);
+                    // console.log('dataValue segment removed', dataValue);
+
+                    // insert segment into new location
+                    // console.log('dataValue before inserted', dataValue);
+                    dataValue = dataValue.slice(0, to) + segment + dataValue.slice(from + length);
+                    // console.log('dataValue inserted', dataValue);
                     break;
                 }
             }
@@ -142,19 +168,19 @@ const groupModifiers = (
             collectModifiers();
 
             type = '';
-        } else if (aRemoved) {
+        } else if (aRemoved && !line.moved) {
             runChecks(
                 '+',
                 index,
                 line,
             );
-        } else if (bRemoved) {
+        } else if (bRemoved && !line.moved) {
             runChecks(
                 '-',
                 index,
                 line,
             );
-        } else if (line.moved) {
+        } else if (line.moved && !aRemoved && !bRemoved) {
             runChecks(
                 'm',
                 index,
@@ -204,8 +230,18 @@ const processModifiers = (
                 changes.push(change);
                 break;
             }
-            case 'm':
+            case 'm': {
+                const fromIndex = data[0].aIndex;
+                const toIndex = data[0].bIndex;
+                const change: DeposedStringStageStepMove = [
+                    'm',
+                    fromIndex,
+                    value.length,
+                    toIndex,
+                ];
+                changes.push(change);
                 break;
+            }
         }
     }
 
@@ -225,14 +261,17 @@ export const generateStage = (
         baseValue,
         differenceValue,
     );
+    // console.log('patienceDiffPlusResult', patienceDiffPlusResult);
 
     const modifiers = groupModifiers(
         patienceDiffPlusResult.lines,
     );
+    // console.log('modifiers', JSON.stringify(modifiers, null, 4));
 
     const changes = processModifiers(
         modifiers,
     );
+    // console.log('changes', JSON.stringify(changes, null, 4));
 
     return changes;
 }
