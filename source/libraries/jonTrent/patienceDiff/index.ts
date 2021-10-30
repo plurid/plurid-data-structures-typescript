@@ -2,6 +2,7 @@
     // #region external
     import {
         PatienceDiffLine,
+        PatienceDiffResult,
     } from '../data';
     // #endregion external
 // #endregion imports
@@ -49,7 +50,8 @@
 function patienceDiff(
     aLines: string,
     bLines: string,
-) {
+    diffPlus?: boolean,
+): PatienceDiffResult | any {
     /**
      * `findUnique` finds all unique values in `arr[lo..hi]`, inclusive.
      * This function is used in preparation for determining the longest common subsequence.
@@ -334,6 +336,19 @@ function patienceDiff(
 
     recurseLCS(0, aLines.length - 1, 0, bLines.length - 1);
 
+
+    if (diffPlus) {
+        return {
+            lines: result,
+            lineCountDeleted: deleted,
+            lineCountInserted: inserted,
+            lineCountMoved: 0,
+            aMove: aMove,
+            aMoveIndex: aMoveIndex,
+            bMove: bMove,
+            bMoveIndex: bMoveIndex,
+        };
+    }
 
     return {
         lines: result,
