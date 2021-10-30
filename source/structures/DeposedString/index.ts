@@ -23,7 +23,7 @@ class DeposedString {
 
 
     constructor(
-        initial: string,
+        initial: string = '',
     ) {
         this.initial = initial;
     }
