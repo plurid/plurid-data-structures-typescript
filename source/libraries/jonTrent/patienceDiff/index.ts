@@ -1,11 +1,14 @@
+// #region imports
+    // #region external
+    import {
+        PatienceDiffLine,
+    } from '../data';
+    // #endregion external
+// #endregion imports
+
+
+
 // #region module
-export interface PatienceDiffLine {
-    line: string;
-    aIndex: number;
-    bIndex: number;
-}
-
-
 /**
  * https://github.com/jonTrent/PatienceDiff
  *
