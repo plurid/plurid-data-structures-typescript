@@ -104,7 +104,7 @@ class DeposedString {
             return false;
         }
 
-        this.stages = this.stages.splice(index, 1);
+        this.stages.splice(index, 1);
 
         return true;
     }
