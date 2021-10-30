@@ -73,7 +73,7 @@ batcher.push('three');
 
 ### Cacher
 
-Caches by id a generic data structure.
+Caches by `id` a generic `T` data structure.
 
 ``` typescript
 import {
