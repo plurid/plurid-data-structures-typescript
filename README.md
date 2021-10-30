@@ -96,6 +96,10 @@ cache.reset(); // true
 
 Computes differences between strings after each `push` and stores them as internal `stages`. At `get` the string is recomposed starting from the initial string following through all the steps of the stages.
 
+The name, `deposed string`, stands for `differentially composable string`.
+
+The `DeposedString` is intended for efficient persistent storage of historic changes to a text (a simple note, a comment, or even a long-form text).
+
 ``` typescript
 import {
     DeposedString,
