@@ -1,8 +1,9 @@
 // #region imports
     // #region external
-    import patienceDiff, {
+    import {
+        patienceDiff,
         PatienceDiffLine,
-    } from '~libraries/jonTrent/patienceDiff';
+    } from '~libraries/jonTrent';
 
     import {
         DeposedStringStage,
