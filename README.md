@@ -41,6 +41,7 @@ The package contains the following data structures
 
 + [Batcher](#batcher)
 + [Cacher](#cacher)
++ [CacherGetter](#cachergetter)
 + [DeposedString](#deposedstring)
 + [LinkedList](#linkedlist)
 + [PieceTable](#piecetable)
@@ -71,6 +72,7 @@ batcher.push('three');
 ```
 
 
+
 ### Cacher
 
 Caches by `id` a generic `T` data structure.
@@ -89,6 +91,43 @@ const b = cache.get('one') // 'two'
 
 cache.unset('one') // true
 cache.reset(); // true
+```
+
+
+
+### CacherGetter
+
+A `Cacher` which runs a `cache call` after a cache miss.
+
+``` typescript
+import {
+    CacherGetter,
+} from '@plurid/plurid-data-structures';
+
+
+const cacherGetter = new CacherGetter<string>(
+    // An array of cacher calls executed in order until one or none fills the cache request.
+    [
+        (index: string) => {
+            // return based on index value
+            if (Math.random() < 0.5) {
+                return 'one';
+            }
+
+            return;
+        },
+        async (index: string) => {
+            // return based on index value
+            // runs asynchronously
+            return 'two';
+        },
+    ],
+    {}, // `Cacher` options
+);
+
+
+cacherGetter.get('one'); // 0.5 chance of getting `'one'` or `Promise<'two'>`.
+cacherGetter.getAsynchronous('one'); // 0.5 chance of getting `'one'` or `'two'`.
 ```
 
 
