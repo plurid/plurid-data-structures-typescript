@@ -12,14 +12,14 @@
 
 
 // #region module
-class CacheGetter<T> {
+class CacherGetter<T> {
     private cacher;
     private getters: CacherGetterCall<T>[];
 
 
     constructor(
-        options: CacherOptions,
-        ...getters: CacherGetterCall<T>[]
+        getters: CacherGetterCall<T>[],
+        options?: Partial<CacherOptions>,
     ) {
         this.cacher = new Cacher<T>(options);
         this.getters = getters;
@@ -93,5 +93,5 @@ class CacheGetter<T> {
 
 
 // #region exports
-export default CacheGetter;
+export default CacherGetter;
 // #endregion exports
