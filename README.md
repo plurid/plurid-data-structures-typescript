@@ -42,6 +42,7 @@ The package contains the following data structures
 + [Batcher](#batcher)
 + [Cacher](#cacher)
 + [CacherGetter](#cachergetter)
++ [Stepper](#stepper)
 + [DeposedString](#deposedstring)
 + [LinkedList](#linkedlist)
 + [PieceTable](#piecetable)
@@ -129,6 +130,38 @@ const cacherGetter = new CacherGetter<string>(
 cacherGetter.get('one'); // 0.5 chance of getting `'one'` or `Promise<'two'>`.
 cacherGetter.getAsynchronous('one'); // 0.5 chance of getting `'one'` or `'two'`.
 ```
+
+
+
+### Stepper
+
+The `Stepper` debounces the incrementation and decrementation of numerical values.
+
+``` typescript
+const id = 'one';
+const stepper = new Stepper();
+
+stepper.define(
+    id,
+    async (value) => {
+        // use value asynchronously
+    },
+);
+
+stepper.step(
+    id,
+    1,
+);
+stepper.step(
+    id,
+    -1,
+);
+stepper.step(
+    id,
+    2,
+);
+```
+
 
 
 ### DeposedString
