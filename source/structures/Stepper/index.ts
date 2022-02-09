@@ -1,0 +1,156 @@
+// #region imports
+    // #region external
+    import {
+        StepperDefinition,
+        StepperLimits,
+        UpdaterFunction,
+    } from '~data/interfaces/Stepper';
+
+    import {
+        STEPPER_DEFAULT_RUN_INTERVAL,
+        STEPPER_DEFAULT_UPDATE_TIME,
+    } from '~data/constants/Stepper';
+    // #endregion external
+// #endregion imports
+
+
+
+// #region module
+class Stepper {
+    private definitions: Record<string, StepperDefinition | undefined> = {};
+    private values: Record<string, number | undefined> = {};
+    private firstHits: Record<string, number | undefined> = {};
+    private lastHits: Record<string, number | undefined> = {};
+    private runInterval;
+
+
+    constructor() {
+        this.runInterval = setInterval(
+            () => {
+                this.run();
+            },
+            STEPPER_DEFAULT_RUN_INTERVAL,
+        );
+    }
+
+
+    public define(
+        id: string,
+        updater: UpdaterFunction,
+        updateTime?: number,
+        currentValue?: number,
+        limits?: StepperLimits,
+    ) {
+        if (this.definitions[id]) {
+            return;
+        }
+
+        const lowerLimit = limits
+            ? limits[0]
+            : undefined;
+        const upperLimit = limits
+            ? limits[1]
+            : undefined;
+
+        this.definitions[id] = {
+            updater,
+            updateTime,
+            lowerLimit,
+            upperLimit,
+        };
+
+        if (typeof currentValue !== undefined) {
+            this.values[id] = currentValue;
+        }
+    }
+
+    public step(
+        id: string,
+        value: number,
+    ) {
+        const definition = this.definitions[id];
+        if (!definition) {
+            return;
+        }
+
+        if (typeof this.firstHits[id] === 'undefined') {
+            this.firstHits[id] = Date.now();
+        }
+        this.lastHits[id] = Date.now();
+
+        const currentValue = this.values[id];
+        if (typeof currentValue === 'undefined') {
+            this.values[id] = 0;
+        }
+
+        const newValue = (this.values[id] as number) + value;
+
+        if (typeof definition.lowerLimit === 'number') {
+            if (newValue < definition.lowerLimit) {
+                this.values[id] = definition.lowerLimit;
+                return;
+            }
+        }
+
+        if (typeof definition.upperLimit === 'number') {
+            if (newValue > definition.upperLimit) {
+                this.values[id] = definition.upperLimit;
+                return;
+            }
+        }
+
+        this.values[id] = newValue;
+    }
+
+
+    private run() {
+        for (const [id, firstHit] of Object.entries(this.firstHits)) {
+            const definition = this.definitions[id];
+            if (!definition) {
+                continue;
+            }
+
+            if (typeof firstHit === 'undefined') {
+                continue;
+            }
+
+            const lastHit = this.lastHits[id];
+            if (typeof lastHit === 'undefined') {
+                continue;
+            }
+
+
+            const resolvedUpdateTime = definition.updateTime || STEPPER_DEFAULT_UPDATE_TIME;
+            if (lastHit - firstHit > resolvedUpdateTime) {
+                this.execute(id);
+            }
+        }
+    }
+
+    private async execute(
+        id: string,
+    ) {
+        const definition = this.definitions[id];
+        if (!definition) {
+            return;
+        }
+
+        const value = this.values[id];
+        if (typeof value === 'undefined') {
+            return;
+        }
+        delete this.values[id];
+        delete this.firstHits[id];
+        delete this.lastHits[id];
+
+        await definition.updater(value);
+        delete this.definitions[id];
+    }
+}
+// #endregion module
+
+
+
+// #region exports
+export default Stepper;
+// #endregion exports

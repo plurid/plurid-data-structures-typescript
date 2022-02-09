@@ -3,6 +3,7 @@
     import Batcher from './structures/Batcher';
     import Cacher from './structures/Cacher';
     import CacherGetter from './structures/CacherGetter';
+    import Stepper from './structures/Stepper';
 
     import DeposedString from './structures/DeposedString';
 
@@ -25,6 +26,7 @@ export {
     Batcher,
     Cacher,
     CacherGetter,
+    Stepper,
 
     DeposedString,
 
