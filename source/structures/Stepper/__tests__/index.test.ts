@@ -8,13 +8,13 @@
 
 // #region module
 describe('Stepper', () => {
-    it('works', () => {
+    it('works', async () => {
         const id = 'one';
         const stepper = new Stepper();
 
         stepper.define(
             id,
-            (value) => {
+            async (value) => {
                 console.log(value);
             },
         );
@@ -31,6 +31,13 @@ describe('Stepper', () => {
             id,
             2,
         );
+
+        // await new Promise ((resolve) => {
+        //     setTimeout(() => {
+        //         console.log('ended');
+        //         resolve(true);
+        //     }, 10_000);
+        // });
     });
 });
 // #endregion module
