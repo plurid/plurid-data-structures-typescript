@@ -145,21 +145,22 @@ stepper.define(
     id,
     async (value) => {
         // use value asynchronously
+        // the value will be 2
     },
-);
+); // the value is 0
 
 stepper.step(
     id,
     1,
-);
+); // the value is 0 + 1 = 1
 stepper.step(
     id,
     -1,
-);
+); // the value is 1 - 1 = 0
 stepper.step(
     id,
     2,
-);
+); // the value is 0 + 2 = 2
 ```
 
 
