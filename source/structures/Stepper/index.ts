@@ -102,8 +102,14 @@ class Stepper {
         this.values[id] = newValue;
     }
 
+    public stop() {
+        clearInterval(this.runInterval);
+    }
+
 
     private run() {
+        const now = Date.now();
+
         for (const [id, firstHit] of Object.entries(this.firstHits)) {
             const definition = this.definitions[id];
             if (!definition) {
@@ -119,9 +125,8 @@ class Stepper {
                 continue;
             }
 
-
             const resolvedUpdateTime = definition.updateTime || STEPPER_DEFAULT_UPDATE_TIME;
-            if (lastHit - firstHit > resolvedUpdateTime) {
+            if (now - lastHit > resolvedUpdateTime) {
                 this.execute(id);
             }
         }
