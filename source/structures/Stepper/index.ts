@@ -1,9 +1,10 @@
 // #region imports
     // #region external
     import {
+        StepperOptions,
         StepperDefinition,
-        StepperLimits,
-        UpdaterFunction,
+        StepperUpdaterFunction,
+        StepperDefineOptions,
     } from '~data/interfaces/Stepper';
 
     import {
@@ -24,26 +25,32 @@ class Stepper {
     private runInterval;
 
 
-    constructor() {
+    constructor(
+        options?: StepperOptions,
+    ) {
+        const runIntervalTime = options?.runInterval || STEPPER_DEFAULT_RUN_INTERVAL;
+
         this.runInterval = setInterval(
             () => {
                 this.run();
             },
-            STEPPER_DEFAULT_RUN_INTERVAL,
+            runIntervalTime,
         );
     }
 
 
     public define(
         id: string,
-        updater: UpdaterFunction,
-        updateTime?: number,
-        currentValue?: number,
-        limits?: StepperLimits,
+        updater: StepperUpdaterFunction,
+        options?: StepperDefineOptions,
     ) {
         if (this.definitions[id]) {
             return;
         }
+
+        const currentValue = options?.currentValue;
+        const limits = options?.limits;
+        const updateTime = options?.updateTime;
 
         const lowerLimit = limits
             ? limits[0]
@@ -126,6 +133,7 @@ class Stepper {
             }
 
             const resolvedUpdateTime = definition.updateTime || STEPPER_DEFAULT_UPDATE_TIME;
+
             if (now - lastHit > resolvedUpdateTime) {
                 this.execute(id);
             }
