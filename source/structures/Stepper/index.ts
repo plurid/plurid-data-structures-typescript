@@ -139,12 +139,15 @@ class Stepper {
         if (typeof value === 'undefined') {
             return;
         }
+
         delete this.values[id];
         delete this.firstHits[id];
         delete this.lastHits[id];
 
-        await definition.updater(value);
+        const updater = definition.updater;
         delete this.definitions[id];
+
+        await updater(value);
     }
 }
 // #endregion module
