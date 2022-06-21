@@ -106,10 +106,13 @@ import {
 } from '@plurid/plurid-data-structures';
 
 
-const cacherGetter = new CacherGetter<string>(
+const cacherGetter = new CacherGetter<string, any>(
     // An array of cacher calls executed in order until one or none fills the cache request.
     [
-        (index: string) => {
+        (
+            index: string,
+            context?: any,
+        ) => {
             // return based on index value
             if (Math.random() < 0.5) {
                 return 'one';
@@ -117,7 +120,10 @@ const cacherGetter = new CacherGetter<string>(
 
             return;
         },
-        async (index: string) => {
+        async (
+            index: string,
+            context?: any,
+        ) => {
             // return based on index value
             // runs asynchronously
             return 'two';
@@ -129,6 +135,7 @@ const cacherGetter = new CacherGetter<string>(
 
 cacherGetter.get('one'); // 0.5 chance of getting `'one'` or `Promise<'two'>`.
 cacherGetter.getAsynchronous('one'); // 0.5 chance of getting `'one'` or `'two'`.
+cacherGetter.getAsynchronous('one', { context: 'data' });
 ```
 
 
