@@ -17,6 +17,7 @@
 class Cacher<T = any> {
     private objects: Map<string, CachedObject<T>> = new Map();
     private options: CacherOptions;
+    private interval: NodeJS.Timer | undefined;
 
 
     constructor(
@@ -25,7 +26,7 @@ class Cacher<T = any> {
         this.options = this.resolveOptions(options);
 
         if (this.options.cleanupInterval > 0) {
-            setInterval(
+            this.interval = setInterval(
                 () => {
                     this.cleanup();
                 },
@@ -102,8 +103,28 @@ class Cacher<T = any> {
         return true;
     }
 
+    /**
+     * Resets all the cache data. The `Cacher` is still usable.
+     *
+     * @returns
+     */
     public reset() {
         this.objects = new Map();
+
+        return true;
+    }
+
+    /**
+     * Destroys the cache. The `Cacher` becomes unusable.
+     *
+     * @returns
+     */
+    public destroy() {
+        this.reset();
+
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
 
         return true;
     }

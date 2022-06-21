@@ -90,10 +90,22 @@ class CacherGetter<T, C> {
         this.cacher.set(index, data);
     }
 
+    /**
+     * Resets all the cache data. The `CacherGetter` is still usable.
+     *
+     * @returns
+     */
     public reset() {
-        this.cacher.reset();
+        return this.cacher.reset();
+    }
 
-        return true;
+    /**
+     * Destroys the cache. The `CacherGetter` becomes unusable.
+     *
+     * @returns
+     */
+    public destroy() {
+        return this.cacher.destroy();
     }
 }
 // #endregion module
