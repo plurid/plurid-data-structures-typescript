@@ -2,7 +2,7 @@
     // #region internal
     import Batcher from './structures/Batcher';
     import Cacher from './structures/Cacher';
-    import CacherGetter from './structures/CacherGetter';
+    import CacherManager from './structures/CacherManager';
     import Stepper from './structures/Stepper';
 
     import DeposedString from './structures/DeposedString';
@@ -25,7 +25,7 @@ export * from './data/constants';
 export {
     Batcher,
     Cacher,
-    CacherGetter,
+    CacherManager,
     Stepper,
 
     DeposedString,

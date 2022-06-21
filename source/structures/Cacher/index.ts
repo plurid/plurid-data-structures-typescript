@@ -62,6 +62,9 @@ class Cacher<T = any> {
 
     public get(
         index: string,
+        cleanup?: (
+            cache: T,
+        ) => void,
     ) {
         const cached = this.objects.get(index);
         if (typeof cached === 'undefined') {
@@ -69,11 +72,21 @@ class Cacher<T = any> {
         }
 
         if (Date.now() > cached.expiration) {
+            if (cleanup) {
+                cleanup(cached.data);
+            }
+
             this.unset(index);
             return;
         }
 
         return cached.data;
+    }
+
+    public getIndexes() {
+        return [
+            ...this.objects.keys(),
+        ];
     }
 
     public set(

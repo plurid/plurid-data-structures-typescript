@@ -1,15 +1,15 @@
 // #region imports
     // #region external
-    import CacherGetter from '../';
+    import CacherManager from '..';
     // #endregion external
 // #endregion imports
 
 
 
 // #region module
-describe('CacherGetter', () => {
+describe('CacherManager', () => {
     it('works', () => {
-        const cache = new CacherGetter<string, string>([
+        const cache = new CacherManager<string, string>([
             (
                 index,
                 context,
