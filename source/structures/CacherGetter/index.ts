@@ -30,7 +30,7 @@ class CacherGetter<T, C> {
         context?: C,
     ): T | undefined {
         const inCache = this.cacher.get(index);
-        if (inCache) {
+        if (typeof inCache !== 'undefined') {
             return inCache;
         }
 
@@ -59,7 +59,7 @@ class CacherGetter<T, C> {
         context?: C,
     ): Promise<T | undefined> {
         const inCache = this.cacher.get(index);
-        if (inCache) {
+        if (typeof inCache !== 'undefined') {
             return inCache;
         }
 

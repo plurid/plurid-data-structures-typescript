@@ -64,7 +64,7 @@ class Cacher<T = any> {
         index: string,
     ) {
         const cached = this.objects.get(index);
-        if (!cached) {
+        if (typeof cached === 'undefined') {
             return;
         }
 
