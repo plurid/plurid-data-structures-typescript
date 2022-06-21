@@ -38,6 +38,7 @@ module.exports = {
     moduleNameMapper: {
         "data/(.*)": "<rootDir>/source/data/$1",
         "libraries/(.*)": "<rootDir>/source/libraries/$1",
+        "structures/(.*)": "<rootDir>/source/structures/$1",
         "utilities/(.*)": "<rootDir>/source/utilities/$1",
     },
 };
