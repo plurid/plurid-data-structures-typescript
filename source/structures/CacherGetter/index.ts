@@ -12,13 +12,13 @@
 
 
 // #region module
-class CacherGetter<T> {
+class CacherGetter<T, C> {
     private cacher;
-    private getters: CacherGetterCall<T>[];
+    private getters: CacherGetterCall<T, C>[];
 
 
     constructor(
-        getters: CacherGetterCall<T>[],
+        getters: CacherGetterCall<T, C>[],
         options?: Partial<CacherOptions>,
     ) {
         this.cacher = new Cacher<T>(options);
@@ -27,6 +27,7 @@ class CacherGetter<T> {
 
     public get(
         index: string,
+        context?: C,
     ): T | undefined {
         const inCache = this.cacher.get(index);
         if (inCache) {
@@ -35,7 +36,10 @@ class CacherGetter<T> {
 
         for (const getter of this.getters) {
             try {
-                const getterResult = getter(index) as T | undefined;
+                const getterResult = getter(
+                    index,
+                    context,
+                ) as T | undefined;
 
                 if (getterResult) {
                     this.cacher.set(index, getterResult);
@@ -52,6 +56,7 @@ class CacherGetter<T> {
 
     public async getAsynchronous(
         index: string,
+        context?: C,
     ): Promise<T | undefined> {
         const inCache = this.cacher.get(index);
         if (inCache) {
@@ -60,7 +65,10 @@ class CacherGetter<T> {
 
         for (const getter of this.getters) {
             try {
-                const getterResult = await getter(index);
+                const getterResult = await getter(
+                    index,
+                    context,
+                );
 
                 if (getterResult) {
                     this.cacher.set(index, getterResult);
