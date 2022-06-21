@@ -41,7 +41,7 @@ The package contains the following data structures
 
 + [Batcher](#batcher)
 + [Cacher](#cacher)
-+ [CacherGetter](#cachergetter)
++ [CacherManager](#cachergetter)
 + [Stepper](#stepper)
 + [DeposedString](#deposedstring)
 + [LinkedList](#linkedlist)
@@ -96,17 +96,17 @@ cache.reset(); // true
 
 
 
-### CacherGetter
+### CacherManager
 
-A `Cacher` which runs a `cache call` after a cache miss.
+A `Cacher` which runs a `cache get` after a cache miss and a `cache unset` at cleanup.
 
 ``` typescript
 import {
-    CacherGetter,
+    CacherManager,
 } from '@plurid/plurid-data-structures';
 
 
-const cacherGetter = new CacherGetter<string, any>(
+const cacherManager = new CacherManager<string, any>(
     // An array of cacher calls executed in order until one or none fills the cache request.
     [
         (
@@ -129,13 +129,22 @@ const cacherGetter = new CacherGetter<string, any>(
             return 'two';
         },
     ],
+    [
+        (
+            index: string,
+            cache: string,
+            context?: any,
+        ) => {
+            // unset cleanup
+        },
+    ],
     {}, // `Cacher` options
 );
 
 
-cacherGetter.get('one'); // 0.5 chance of getting `'one'` or `Promise<'two'>`.
-cacherGetter.getAsynchronous('one'); // 0.5 chance of getting `'one'` or `'two'`.
-cacherGetter.getAsynchronous('one', { context: 'data' });
+cacherManager.get('one'); // 0.5 chance of getting `'one'` or `Promise<'two'>`.
+cacherManager.getAsynchronous('one'); // 0.5 chance of getting `'one'` or `'two'`.
+cacherManager.getAsynchronous('one', { context: 'data' });
 ```
 
 
