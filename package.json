@@ -38,9 +38,9 @@
         "test": "jest -c ./configurations/jest.config.js --coverage ./source",
         "test.source": "jest -c ./configurations/jest.config.js",
         "build.removeTests": "rm -rf `find ./distribution/ -type d -name __tests__`",
-        "start": "pnpm clean && rollup -c -w",
-        "build.development": "pnpm clean && rollup -c",
-        "build.production": "rollup -c --environment BUILD:production",
+        "start": "pnpm clean && rollup -c ./scripts/rollup.config.js -w",
+        "build.development": "pnpm clean && rollup -c ./scripts/rollup.config.js",
+        "build.production": "rollup -c ./scripts/rollup.config.js --environment BUILD:production",
         "build": "pnpm clean && pnpm lint && pnpm test && pnpm build.production && pnpm build.removeTests",
         "prepublishOnly": "pnpm build"
     },
